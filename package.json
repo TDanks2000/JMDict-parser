@@ -5,7 +5,8 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon ./src/parser.js"
+    "start": "node ./src/parser.js",
+    "startDev": "nodemon ./src/parser.js"
   },
   "dependencies": {
     "chalk": "^5.2.0",
