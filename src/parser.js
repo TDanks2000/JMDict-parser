@@ -27,7 +27,7 @@ const getFileAndSave = async (date) => {
     return log(chalk.yellow`File already exists, moving on...`);
 
   // fetch file
-  log(chalk.bold`fetching file...`);
+  log(chalk.bold.yellow`fetching file...`);
   const { body } = await got(url, {
     responseType: "buffer",
   });
@@ -37,8 +37,9 @@ const getFileAndSave = async (date) => {
   const unzipped = await ungzip(body);
 
   // save file as xml
-  log(chalk.bold.green`saving file...`);
+  log(chalk.bold.yellow`saving file...`);
   fs.writeFileSync(`${filePath}/${file}-${date}.${fileExt}`, unzipped, "utf8");
+  log(chalk.bold.green`done getting file moving on....`);
 };
 
 const setupDict = (date) => {
@@ -97,14 +98,17 @@ const convertDate = (date) => {
   const dateString = convertDate(date);
   const outputFilename = `${saveFilePath}/${file}-${dateString}.json`;
 
+  console.time(chalk.bold.green`finished in:`);
   log(chalk.green.bold("starting..."));
   await getFileAndSave(dateString);
   //check if file exists with today's date and if so, exit
-  if (fs.existsSync(outputFilename))
-    return log(chalk.green.bold`File already exists, finished...`);
-  else {
+  if (fs.existsSync(outputFilename)) {
+    log(chalk.green.bold`File already exists, finished...`);
+    return console.timeEnd(chalk.bold.green`finished in:`);
+  } else {
     const dictionary = await setupDict(dateString);
     await saveDict(dictionary, dateString);
     log(chalk.green.bold("Finished..."));
+    console.timeEnd(chalk.bold.green`finished in:`);
   }
 })();
