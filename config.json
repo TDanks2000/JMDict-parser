@@ -1,0 +1,7 @@
+{
+  "fileURL": "http://ftp.edrdg.org/pub/Nihongo/JMdict.gz",
+  "downloadsFilePath": "./downloads",
+  "saveFilePath": "./json",
+  "file": "JMdict",
+  "fileExt": "xml"
+}

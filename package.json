@@ -1,0 +1,17 @@
+{
+  "name": "jmdict-xml-parser",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon ./src/parser.js"
+  },
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "got": "^12.5.3",
+    "node-gzip": "^1.1.2",
+    "xml-escape": "^1.1.0",
+    "xml2js": "^0.4.23"
+  }
+}
