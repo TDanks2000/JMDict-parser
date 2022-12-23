@@ -101,7 +101,7 @@ const convertDate = (date) => {
 const cleanUpDownloads = async () => {
   const files = await fs.readdirSync(path.join(__dirname, "..", filePath));
   await files.forEach((file) => {
-    if (file !== ".gitkeep" || file !== "README.md")
+    if (file !== ".gitKeep" || file !== "README.md")
       return fs.unlinkSync(path.join(__dirname, "..", filePath, file));
   });
   log(chalk.bold.green`cleaned up downloads folder...`);
@@ -109,7 +109,7 @@ const cleanUpDownloads = async () => {
 
 // check if file exists
 const checkFile = async (filePath) => {
-  return await fs.existsSync(filePath);
+  return await fs.readdirSync(filePath).length;
 };
 
 (async () => {
@@ -117,31 +117,22 @@ const checkFile = async (filePath) => {
   const dateString = convertDate(date);
   const outputFilename = `${saveFilePath}/${file}-${dateString}.json`;
 
+  //clean up downloads folder
+  await cleanUpDownloads();
+  return false;
+
   console.time(chalk.bold.green`finished in:`);
   log(chalk.green.bold("starting..."));
   await getFileAndSave(dateString);
   //check if file exists with today's date and if so, exit
   if (fs.existsSync(outputFilename)) {
     log(chalk.green.bold`File already exists, finished...`);
-    console.timeEnd(chalk.bold.green`finished in:`);
+    console.log(await checkFile(path.join(__dirname, "..", saveFilePath)));
+    return console.timeEnd(chalk.bold.green`finished in:`);
   } else {
     const dictionary = await setupDict(dateString);
     await saveDict(dictionary, dateString);
     log(chalk.green.bold("Finished..."));
     console.timeEnd(chalk.bold.green`finished in:`);
   }
-
-  //clean up downloads folder
-  await cleanUpDownloads();
-  console.log(
-    await checkFile(
-      path.join(
-        __dirname,
-        "..",
-        filePath,
-        outputFilename.replace(".json", ".xml")
-      )
-    )
-  );
-  return false;
 })();
